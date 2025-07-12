@@ -153,9 +153,11 @@ erDiagram
 - Clone the repository
 - Update the application.properties file with your database username and password
 
-  ```spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce
+  ```properties
+  spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce
   spring.datasource.username=your_mysql_username
-  spring.datasource.password=your_mysql_password```
+  spring.datasource.password=your_mysql_password
+  ```
 
 - Run the project from command line using: .\mvnw spring-boot:run
 
