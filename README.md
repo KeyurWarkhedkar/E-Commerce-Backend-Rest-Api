@@ -35,7 +35,7 @@ This is a fully functional backend API for an E-Commerce platform, built using S
 - Clone the repository
 - Update the application.properties file with your database username and password
 
-- spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce
+  spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce
   spring.datasource.username=your_mysql_username
   spring.datasource.password=your_mysql_password
 
