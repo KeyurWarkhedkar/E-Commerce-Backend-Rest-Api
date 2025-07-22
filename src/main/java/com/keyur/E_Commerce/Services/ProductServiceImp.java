@@ -1,6 +1,7 @@
 package com.keyur.E_Commerce.Services;
 
 import com.keyur.E_Commerce.DTOs.ProductDTO;
+import com.keyur.E_Commerce.DTOs.SearchFilterDTO;
 import com.keyur.E_Commerce.Entities.Product;
 import com.keyur.E_Commerce.Entities.Seller;
 import com.keyur.E_Commerce.Enums.CategoryEnum;
@@ -9,6 +10,12 @@ import com.keyur.E_Commerce.ExceptionObjects.ProductNotFoundException;
 import com.keyur.E_Commerce.Repositories.ProductDao;
 import com.keyur.E_Commerce.Repositories.SellerDao;
 import com.keyur.E_Commerce.Security.SecurityUtils;
+import com.keyur.E_Commerce.Specification.ProductSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,6 +76,11 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
+    public List<Product> searchProductsByName(String name) {
+        return List.of();
+    }
+
+    @Override
     public String deleteProductFromCatalog(Integer id) {
         //check if any product with the given id exists in the database or not
         Optional<Product> optionalProduct = productDao.findById(id);
@@ -120,5 +132,18 @@ public class ProductServiceImp implements ProductService{
     @Override
     public Product updateProductQuantityWithId(Integer id, ProductDTO prodDTO) {
         return null;
+    }
+
+    @Override
+    public Page<Product> searchProduct(SearchFilterDTO req) {
+        Sort sort = req.getSortDir().equalsIgnoreCase("asc") ?
+                Sort.by(req.getSortBy()).ascending() :
+                Sort.by(req.getSortBy()).descending();
+
+        Pageable pageable = PageRequest.of(req.getPage(), req.getSize(), sort);
+
+        Specification<Product> spec = ProductSpecification.getSpec(req);
+
+        return productDao.findAll(spec, pageable);
     }
 }

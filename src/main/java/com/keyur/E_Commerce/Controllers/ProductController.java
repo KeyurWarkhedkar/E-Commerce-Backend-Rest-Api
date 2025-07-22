@@ -1,11 +1,14 @@
 package com.keyur.E_Commerce.Controllers;
 
+import com.keyur.E_Commerce.DTOs.PagedResponseDTO;
 import com.keyur.E_Commerce.DTOs.ProductDTO;
+import com.keyur.E_Commerce.DTOs.SearchFilterDTO;
 import com.keyur.E_Commerce.Entities.Product;
 import com.keyur.E_Commerce.Enums.CategoryEnum;
 import com.keyur.E_Commerce.Enums.ProductStatus;
 import com.keyur.E_Commerce.Services.ProductServiceImp;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -105,5 +108,12 @@ public class ProductController {
         Product prod =   pService.updateProductQuantityWithId(id, prodDto);
 
         return new ResponseEntity<Product>(prod,HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/customer/search/products")
+    public ResponseEntity<PagedResponseDTO<Product>> searchProducts(@RequestBody SearchFilterDTO req) {
+        Page<Product> page = pService.searchProduct(req);
+        PagedResponseDTO<Product> pagedResponseDTO = new PagedResponseDTO<>(page);
+        return new ResponseEntity<>(pagedResponseDTO, HttpStatus.OK);
     }
 }
